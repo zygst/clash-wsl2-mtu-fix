@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - main  # 或您选择的分支
+  workflow_dispatch:    # 加上这一行，就可以手动点击运行
 
 jobs:
   build:
