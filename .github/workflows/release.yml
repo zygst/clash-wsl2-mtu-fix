@@ -4,10 +4,10 @@ on:
   push:
     branches:
       - main
-  workflow_dispatch:          # 支持手动点击运行
+  workflow_dispatch:
 
 permissions:
-  contents: write             # 关键 Release 必须的权限
+  contents: write
 
 jobs:
   build:
@@ -24,18 +24,18 @@ jobs:
 
       - name: Build
         run: |
-          CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -o myapp main.go
+          CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -o clash-wsl2-mtu-fix main.go
 
-      - name: Get short SHA
-        id: short-sha
-        run: echo "SHORT_SHA=$(echo ${{ github.sha }} | cut -c1-7)" >> $GITHUB_ENV
+      - name: Get Beijing date
+        run: |
+          echo "RELEASE_DATE=$(TZ=Asia/Shanghai date +%Y%m%d)" >> $GITHUB_ENV
 
       - name: Create Release and Upload Asset
         uses: softprops/action-gh-release@v2
         with:
-          tag_name: ${{ env.SHORT_SHA }}
-          name: Release ${{ env.SHORT_SHA }}
-          files: myapp
+          tag_name: ${{ env.RELEASE_DATE }}
+          name: Release ${{ env.RELEASE_DATE }}
+          files: clash-wsl2-mtu-fix
           draft: false
           prerelease: false
         env:
